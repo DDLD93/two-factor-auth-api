@@ -16,7 +16,7 @@ module.exports = {
         jwtSecret: JWT_SECRET || "cSi6nundefinedei3eEz&xt&xgzcqZhhoCd46cXr1$Bg&PbwjMQXwl!%$Ssert"
     },
     redis: {
-        host: REDIS_HOST || '102.134.17.171',
+        host: REDIS_HOST || 'redis',
         port: REDIS_PORT || 6379,
         password: REDIS_PASS || ""
     },

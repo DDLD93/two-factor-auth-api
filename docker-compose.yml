@@ -1,0 +1,106 @@
+services:
+
+  auth:
+    build: ./auth
+    restart: always
+    environment:
+      APP_PORT: "${APP_PORT}"
+    ports:
+     - 80:3000  
+    networks:
+      - frontnet
+  notification:
+    build: ./notification
+    restart: always
+    environment:
+      APP_PORT: "${APP_PORT}"
+    networks:
+      - frontnet    
+  mongodb:
+    container_name: mongodb
+    image: mongo:6.0.2
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - frontnet
+    volumes:
+      - $PWD/STORAGE/mongodb:/data/db
+
+  redis:
+    container_name: redisdb
+    image: redis:latest
+    restart: always
+   
+    ports:
+      - "6379:6379"
+    networks:
+      - frontnet
+    volumes:
+      - $PWD/STORAGE/redisdb:/data
+  # traefik:
+  #    container_name: traefik
+  #    image: traefik:1.7.6-alpine
+  #    restart: always
+  #    command: --docker
+  #    environment:
+  #     DO_AUTH_TOKEN: dop_v1_e9e3aa6daf406844d18a7d5bf348eda1c6d6158e1d3eb5ec22de4191b699f60d
+  #    labels:
+  #      - traefik.frontend.rule=Host:monitor.feims.ng
+  #      - traefik.port=8080
+  #      - traefik.enable=true
+  #      - traefik.docker.network=app_frontnet
+  #    volumes:
+  #      - /var/run/docker.sock:/var/run/docker.sock
+  #      - $PWD/STORAGE/traefik.toml:/etc/traefik/traefik.toml
+  #      - $PWD/STORAGE/acme.json:/acme.json
+  #    ports:
+  #      - 80:80
+  #      - 443:443
+  #    networks:
+  #      - frontnet
+
+
+  # rabbitmq:
+  #   container_name: rabbitmq
+  #   image: rabbitmq:3-management-alpine
+  #   hostname: rabbitmq
+  #   restart: always
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.docker.network=frontnet
+  #     - traefik.frontend.rule=Host:rab.feims.ng
+  #     - traefik.port=15672
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
+  #     RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
+  #     APP_RABBITMQ_URL: "${APP_RABBITMQ_URL}"
+  #   volumes:
+  #     - ./STORAGE/rabbitmq/:/var/lib/rabbitmq/
+  #     - ./STORAGE/rabbitmq/logs/:/var/log/rabbitmq
+  #   networks:
+  #     - frontnet
+
+  # questdb:
+  #   container_name: questdb
+  #   image: questdb/questdb
+  #   restart: always
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.frontend.auth.basic.users=admin:$$apr1$$xnY9/GY6$$wGOZhpoAxJlg008io1Wtv0
+  #     - traefik.docker.network=frontnet
+  #     - traefik.frontend.rule=Host:td.feims.ng
+  #     - traefik.port=9000
+  #   ports:
+  #     - 9000:9000
+  #     - 9009:9009
+  #   volumes:
+  #     - $PWD/STORAGE/questdb:/root
+  #   networks:
+  #     - frontnet
+
+networks:
+  frontnet:

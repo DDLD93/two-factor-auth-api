@@ -56,7 +56,7 @@ class UserController {
 
     async sendToken(phone, email) {
         try {
-            RedisCTRL.otpSMS(phone)
+            RedisCTRL.otpResendSMS(phone)
             const token = jwt.sign({
                 email: email || null,
                 phone: phone || null 

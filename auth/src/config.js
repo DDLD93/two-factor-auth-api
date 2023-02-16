@@ -17,14 +17,14 @@ module.exports = {
         jwtSecret: JWT_SECRET || "cSi6nundefinedei3eEz&xt&xgzcqZhhoCd46cXr1$Bg&PbwjMQXwl!%$Ssert"
     },
     redis: {
-        host: REDIS_HOST || '102.134.17.171',
+        host: REDIS_HOST || 'redis',
         port: REDIS_PORT || 6379,
         user: REDIS_USER || "default",
         password: REDIS_PASS || ""
     },
 
     endpoints: {
-        mongoUrl: APP_MONGODB_URL || "mongodb://localhost:27017/auth"
+        mongoUrl: APP_MONGODB_URL || "mongodb://mongodb:27017/auth"
     },
   
 }

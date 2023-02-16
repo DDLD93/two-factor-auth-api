@@ -43,6 +43,12 @@ class RedisCTRL {
         this.client.set(phone, code, options)
         this.plish("sms", {receiver:phone,code:code})
     }
+   async otpResendSMS(phone, options = { EX: 1500, NX: true }) {
+        await this.client.del(phone)
+        let code = Math.floor(100000 + Math.random() * 900000);
+        this.client.set(phone, code, options)
+        this.plish("sms", {receiver:phone,code:code})
+    }
     otpEmail(email, options = { EX: 1500, NX: true }) {
         let code = Math.floor(100000 + Math.random() * 900000);
         this.client.set(email, code, options)
