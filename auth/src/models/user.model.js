@@ -14,9 +14,9 @@ const UserSchema = new Schema({
     updatedAt: { type: Date, default: Date.now() },
     createdAt: { type: Date, default: Date.now() },
 });
-UserSchema.pre("save", function (next) {
-    this.fullName = this.lastName + " " + this.firstName
-    next()
-})
+// UserSchema.pre("save", function (next) {
+//     this.fullName = this.lastName + " " + this.firstName
+//     next()
+// })
 
 module.exports = mongoose.model("User", UserSchema);
