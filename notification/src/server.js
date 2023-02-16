@@ -3,8 +3,9 @@ const sms = require("./connections/aggregator.connection")
 
 client.subscribe("sms",async (msg,chan)=>{
     let {receiver,code} = JSON.parse(msg)
-    let {ok, message} = await sms([receiver],code)
-    console.log({ok, message})
+    // let {ok, message} = await sms([receiver],code)
+    // console.log({ok, message})
+    console.log({receiver,code})
   
 })
 

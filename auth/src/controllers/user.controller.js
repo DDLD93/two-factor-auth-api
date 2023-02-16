@@ -56,7 +56,7 @@ class UserController {
 
     async sendToken(phone, email) {
         try {
-            RedisCTRL.otpSMS(phone)
+            RedisCTRL.otpResendSMS(phone)
             const token = jwt.sign({
                 email: email || null,
                 phone: phone || null 
@@ -74,7 +74,7 @@ class UserController {
             let user = await UserModel.findOne({ email});
             if (user) {
                 if (!user.isVerfied) {
-                    return { ok: false, message: "phone is not verify" }    
+                    return { ok: false, message: "phone is not verified" }    
                 }
                 const pCheck =  bcrypt.compareSync(password, user.password)
                 if (pCheck) {
