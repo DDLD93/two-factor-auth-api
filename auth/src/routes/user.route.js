@@ -3,10 +3,10 @@ const tokenParser = require("../middleware/token.middleware")
 
 module.exports = (express) => {
     api = express.Router();
-    
+
     api.post("/login", async (req, res) => {
-        let { email, password } = req.body;
-        const { ok, user, token, message } = await UserCtrl.loginUser(email, password)
+        let { phone, email, password } = req.body;
+        const { ok, user, token, message } = await UserCtrl.loginUser(phone, email, password)
         if (ok) {
             res.status(200).json({ ok, user, token })
         } else {
@@ -16,18 +16,18 @@ module.exports = (express) => {
 
     api.post("/register", async (req, res) => {
         let data = req.body
-        let { ok, user, message,accessToken } = await UserCtrl.registerUser(data)
+        let { ok, user, message, accessToken } = await UserCtrl.registerUser(data)
         if (ok) {
-            return res.status(201).json({ ok: true, user,accessToken })
+            return res.status(201).json({ ok: true, user, accessToken })
         } else {
             return res.status(500).json({ ok: false, message });
         }
     });
-    api.post("/verify",tokenParser, async (req, res) => {
-        let {code } = req.body
-        let { ok, user,token, message } = await UserCtrl.verifyUser(req.user.phone, code)
+    api.post("/verify", tokenParser, async (req, res) => {
+        let { code } = req.body
+        let { ok, user, token, message } = await UserCtrl.verifyUser(req.user.phone, code)
         if (ok) {
-            return res.status(201).json({ ok: true, user,token })
+            return res.status(201).json({ ok: true, user, token })
         } else {
             return res.status(500).json({ ok: false, message });
         }
@@ -38,6 +38,17 @@ module.exports = (express) => {
         let { ok, accessToken, message } = await UserCtrl.sendToken(phone)
         if (ok) {
             return res.status(201).json({ ok: true, accessToken })
+        } else {
+            return res.status(500).json({ ok: false, message });
+        }
+    });
+
+    api.post("/reset-password",tokenParser, async (req, res) => {
+        let { password } = req.body
+        console.log("userrrr>>>>>>", req.user)
+        let { ok, token, user, message } = await UserCtrl.resetPassword(req.user?.phone, password)
+        if (ok) {
+            return res.status(200).json({ ok: true, user, token })
         } else {
             return res.status(500).json({ ok: false, message });
         }
@@ -59,13 +70,14 @@ module.exports = (express) => {
 
 
 
+
     api.get("/", async (req, res) => {
-        let status = await UserCtrl.getUsers();
-        if (status.ok) {
-            if (status.payload) return res.status(200).json(status);
+        let { ok, message, users } = await UserCtrl.getUsers();
+        if (ok) {
+            if (users) return res.status(200).json(users);
             return res.status(200).json([]);
         } else {
-            return res.status(500).json(status);
+            return res.status(500).json({ ok, message });
         }
     });
 
