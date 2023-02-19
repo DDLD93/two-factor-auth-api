@@ -1,12 +1,41 @@
 services:
-
+  proxy:
+    image: "traefik:v2.9"
+    container_name: "traefik"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.proxy.rule=Host(`dev.nonicoms.ng`)"
+      - "traefik.http.routers.proxy.tls.certresolver=myresolver"
+      - "traefik.http.routers.proxy.entrypoints=websecure"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.email=umar.jere@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "443:443"
+      - "8080:8080"
+      - "80:80"
+    volumes:
+      - "$PWD/STORAGE/letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - frontnet  
   auth:
     build: ./auth
     restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.auth.rule=PathPrefix(`/api/v1/auth`)"
+      - "traefik.http.routers.auth.entrypoints=websecure"
+      - "traefik.http.routers.auth.tls.certresolver=myresolver"
     environment:
       APP_PORT: "${APP_PORT}"
-    ports:
-     - 80:3000  
     networks:
       - frontnet
   notification:
@@ -38,27 +67,6 @@ services:
       - frontnet
     volumes:
       - $PWD/STORAGE/redisdb:/data
-  # traefik:
-  #    container_name: traefik
-  #    image: traefik:1.7.6-alpine
-  #    restart: always
-  #    command: --docker
-  #    environment:
-  #     DO_AUTH_TOKEN: dop_v1_e9e3aa6daf406844d18a7d5bf348eda1c6d6158e1d3eb5ec22de4191b699f60d
-  #    labels:
-  #      - traefik.frontend.rule=Host:monitor.feims.ng
-  #      - traefik.port=8080
-  #      - traefik.enable=true
-  #      - traefik.docker.network=app_frontnet
-  #    volumes:
-  #      - /var/run/docker.sock:/var/run/docker.sock
-  #      - $PWD/STORAGE/traefik.toml:/etc/traefik/traefik.toml
-  #      - $PWD/STORAGE/acme.json:/acme.json
-  #    ports:
-  #      - 80:80
-  #      - 443:443
-  #    networks:
-  #      - frontnet
 
 
   # rabbitmq:
