@@ -8,6 +8,7 @@ const UserSchema = new Schema({
     email: { type: String, index: { unique: true, } },
     phone: { type: String, index: { unique:true } },
     password: { type: String },
+    dob:{type: String},
     userType: { type: String, enum: ["Regular", "Admin"], default: "Regular" },
     status: { type: String, enum: ["Active", "Suspended"], default: "Active" },
     isVerfied: { type: Boolean, default: false },
