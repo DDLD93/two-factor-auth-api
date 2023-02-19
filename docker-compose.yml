@@ -1,5 +1,4 @@
 services:
-
   auth:
     build: ./auth
     restart: always
@@ -31,9 +30,8 @@ services:
     container_name: redisdb
     image: redis:latest
     restart: always
-   
     ports:
-      - "6379:6379"
+      - 6379:6379
     networks:
       - frontnet
     volumes:
