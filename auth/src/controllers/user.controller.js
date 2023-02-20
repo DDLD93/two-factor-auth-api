@@ -10,9 +10,9 @@ class UserController {
 
     async registerUser(data) {
         try {
-            let user = await UserModel.findOne({ email: data.email });
+            let user = await UserModel.findOne({ phone: data.phone });
             if (user) {
-                return { ok: false, message: "Account with this email already exist" }
+                return { ok: false, message: "Account with this phone already exist" }
             } else {
                 let newData = data
                 newData.password = await bcrypt.hash(newData.password, 10)
@@ -39,7 +39,7 @@ class UserController {
             }
             let user = await UserModel.findOneAndUpdate({ phone }, { isVerfied: true }, { multi: false, new: true });
             if (!user) {
-                return { ok: false, message: "An Error occured updating record" }
+                return { ok: false, message: "An Error occured updating user record" }
             } else {
                 const token = jwt.sign({
                     id: user._id,
@@ -71,7 +71,7 @@ class UserController {
                     userType: user.userType,
                 }, jwtSecret, { expiresIn: "2h" });
                 user.password = '*********';
-                return { ok: true, accessToken }
+                return { ok: true, accessToken:token }
             }
         } catch (error) {
             return { ok: false, message: error.message }

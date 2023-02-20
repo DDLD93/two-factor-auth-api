@@ -4,9 +4,8 @@ services:
     container_name: "traefik"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.proxy.rule=Host(`dev.nonicoms.ng`)"
-      - "traefik.http.routers.proxy.tls.certresolver=myresolver"
-      - "traefik.http.routers.proxy.entrypoints=websecure"
+      - "traefik.http.routers.auth.rule=PathPrefix(`/proxy/dashbord`)"
+      - "traefik.http.routers.auth.tls.certresolver=myresolver"
     command:
       #- "--log.level=DEBUG"
       - "--api.insecure=true"
