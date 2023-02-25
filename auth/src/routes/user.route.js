@@ -1,5 +1,6 @@
 const UserCtrl = require('../controllers/user.controller');
-const tokenParser = require("../middleware/token.middleware")
+const tokenParser = require("../middleware/token.middleware");
+const jsonParser = require("../middleware/validator.middleware")
 
 module.exports = (express) => {
     api = express.Router();
@@ -14,7 +15,7 @@ module.exports = (express) => {
         }
     });
 
-    api.post("/register", async (req, res) => {
+    api.post("/register",jsonParser,async (req, res) => {
         let data = req.body
         let { ok, user, message, accessToken } = await UserCtrl.registerUser(data)
         if (ok) {

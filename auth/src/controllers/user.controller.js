@@ -15,11 +15,12 @@ class UserController {
                 return { ok: false, message: "Account with this phone already exist" }
             } else {
                 let newData = data
-                newData.password = await bcrypt.hash(newData.password, 10)
+                newData.password = await bcrypt.hash(data.password, 10)
                 const newUser = new UserModel(newData);
                 const user = await newUser.save();
                 user.password = '*********';
                 RedisCTRL.otpSMS(user.phone)
+                RedisCTRL.otpEmail(user.email)
                 const token = jwt.sign({
                     id: user._id,
                     email: user.email,
