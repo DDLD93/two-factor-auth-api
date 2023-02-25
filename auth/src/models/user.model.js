@@ -7,6 +7,7 @@ const UserSchema = new Schema({
     fullName: { type: String },
     email: { type: String, index: { unique: true, } },
     phone: { type: String, index: { unique:true } },
+    dob:{type:Date},
     password: { type: String },
     userType: { type: String, enum: ["Regular", "Admin"], default: "Regular" },
     status: { type: String, enum: ["Active", "Suspended"], default: "Active" },
