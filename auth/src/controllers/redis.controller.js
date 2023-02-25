@@ -38,18 +38,18 @@ class RedisCTRL {
     write(key, value) {
         this.client.set(key, value)
     }
-    otpSMS(phone, options = { EX: 1500, NX: true }) {
+    otpSMS(phone, options = { EX: 15000, NX: true }) {
         let code = Math.floor(100000 + Math.random() * 900000);
         this.client.set(phone, code, options)
         this.plish("sms", {receiver:phone,code:code})
     }
-   async otpResendSMS(phone, options = { EX: 1500, NX: true }) {
+   async otpResendSMS(phone, options = { EX: 15000, NX: true }) {
         await this.client.del(phone)
         let code = Math.floor(100000 + Math.random() * 900000);
         this.client.set(phone, code, options)
         this.plish("sms", {receiver:phone,code:code})
     }
-    otpEmail(email, options = { EX: 1500, NX: true }) {
+    otpEmail(email, options = { EX: 15000, NX: true }) {
         let code = Math.floor(100000 + Math.random() * 900000);
         this.client.set(email, code, options)
         this.plish("email", {receiver:email,code:code})

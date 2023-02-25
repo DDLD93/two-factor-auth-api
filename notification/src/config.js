@@ -10,11 +10,7 @@ const {
 } = process.env;
 
 module.exports = {
-    app: {
-        port: APP_PORT || 3000,
-        appVersion: APP_VERSION || "v1",
-        jwtSecret: JWT_SECRET || "cSi6nundefinedei3eEz&xt&xgzcqZhhoCd46cXr1$Bg&PbwjMQXwl!%$Ssert"
-    },
+   
     redis: {
         host: REDIS_HOST || 'redis',
         port: REDIS_PORT || 6379,
@@ -30,6 +26,12 @@ module.exports = {
     adfricatalking:{
         username: "rida",
         apiKey :"55d02e3f1b1bd23d225002937b1b1364fd5f4ded347be102b592b0c2fb6c8208"
-    }
+    },
+    nodemailer: {
+        host: "mail.nonicoms.ng",
+        port: 465,
+        user: "dev@nonicoms.ng",
+        pass: "1600uAj@1105"
+    },
 }
 

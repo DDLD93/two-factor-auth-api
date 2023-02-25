@@ -13,7 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "africastalking": "^0.5.9",
-    "redis": "^4.6.4"
+    "redis": "^4.6.4",
+    "nodemailer":"^6.9.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
